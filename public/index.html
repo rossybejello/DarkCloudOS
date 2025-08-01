@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DarkCloud OS Admin Edition v5</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="desktop" id="desktop">
+    <div class="dynamic-island" id="island"></div>
+    <div class="dock" id="dock"></div>
+    
+    <div class="app-window" id="appWindowTemplate" style="display: none;">
+      <div class="app-header">
+        <span class="app-title">App Name</span>
+        <div class="window-controls">
+          <span class="window-btn close-btn" aria-label="Close window"></span>
+          <span class="window-btn minimize-btn" aria-label="Minimize window"></span>
+          <span class="window-btn maximize-btn" aria-label="Maximize window"></span>
+        </div>
+      </div>
+      <div class="app-content"></div>
+    </div>
+    
+    <div class="context-menu" id="contextMenu">
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Terminal">Terminal</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Finder">Finder</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Notes">Notes</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Calculator">Calculator</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Mail">Mail</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Settings">Settings</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="Admin Dashboard">Admin Dashboard</div>
+      <div class="context-menu-item" data-action="launch-app" data-app-name="About">About</div>
+      <div class="context-menu-item" data-action="change-wallpaper">Change Wallpaper</div>
+      <div class="context-menu-item" data-action="toggle-dark-mode">Toggle Dark Mode</div>
+    </div>
+    
+    <input type="file" id="fileInput" style="display: none;">
+    <input type="file" id="folderInput" style="display: none;" webkitdirectory directory>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
