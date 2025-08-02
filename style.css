@@ -642,3 +642,216 @@ html, body {
   justify-content: space-between;
   align-items: center;
 }
+
+/* Start Menu Styles */
+.start-menu-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
+}
+
+.start-menu-search {
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: var(--glass-bg);
+  z-index: 1;
+}
+
+.start-menu-search input {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--highlight);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.start-menu-search input:focus {
+  border-color: var(--active-window-border);
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+}
+
+.start-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.start-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.start-menu-item:hover {
+  background: var(--hover-glow);
+  transform: translateY(-3px);
+}
+
+.start-menu-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.start-menu-item span {
+  font-size: 0.8rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+/* Text Editor Styles */
+.text-editor-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-editor-container textarea {
+  width: 100%;
+  height: 100%;
+  background: var(--highlight);
+  border: none;
+  padding: 15px;
+  color: var(--text-color);
+  font-family: 'Consolas', monospace;
+  resize: none;
+  outline: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Paint App Styles */
+.paint-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+}
+
+.paint-container canvas {
+  flex-grow: 1;
+  background: white;
+  cursor: crosshair;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.paint-toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: var(--highlight);
+  align-items: center;
+  border-radius: 5px;
+  flex-wrap: wrap;
+}
+
+.paint-toolbar button {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.paint-toolbar button.active {
+  background: var(--hover-glow);
+  border-color: var(--active-window-border);
+}
+
+.paint-toolbar input[type="color"] {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+}
+
+.paint-toolbar input[type="color"]::-webkit-color-swatch {
+  border-radius: 50%;
+  border: none;
+}
+
+.paint-toolbar input[type="range"] {
+  width: 100px;
+  cursor: pointer;
+}
+
+/* Browser App Styles */
+.browser-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.browser-toolbar {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  background: var(--highlight);
+  align-items: center;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.browser-toolbar button {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.browser-toolbar button:hover {
+  background: var(--hover-glow);
+}
+
+.browser-toolbar input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.browser-toolbar input:focus {
+  border-color: var(--active-window-border);
+}
+
+.browser-container iframe {
+  flex-grow: 1;
+  border: none;
+  background: white;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
