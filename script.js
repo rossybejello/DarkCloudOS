@@ -84,7 +84,7 @@ function restoreSessionState() {
   ];
   let currentWallpaperIndex = 0;
 
-  // Updated app icons with local paths
+  // Updated app icons with local paths and added JS-OS apps
   const apps = [
     { name: 'Terminal', icon: 'icons/terminal.svg' },
     { name: 'Finder', icon: 'icons/finder.svg' },
@@ -93,7 +93,12 @@ function restoreSessionState() {
     { name: 'Mail', icon: 'icons/mail.svg' },
     { name: 'Settings', icon: 'icons/settings.svg' },
     { name: 'Admin Dashboard', icon: 'icons/admin.svg' },
-    { name: 'About', icon: 'icons/about.svg' }
+    { name: 'About', icon: 'icons/about.svg' },
+    // Added JS-OS apps
+    { name: 'Text Editor', icon: 'icons/text-editor.svg' },
+    { name: 'Paint', icon: 'icons/paint.svg' },
+    { name: 'Browser', icon: 'icons/browser.svg' },
+    { name: 'Start Menu', icon: 'icons/start-menu.svg' }
   ];
 
   function vibrateDevice(pattern = [50]) {
@@ -486,6 +491,53 @@ function restoreSessionState() {
                   </div>
               `;
               break;
+          // Start Menu
+          case 'Start Menu':
+              content = `
+                  <div class="start-menu-content">
+                    <div class="start-menu-search">
+                      <input type="text" placeholder="Search apps..." id="startMenuSearch" />
+                    </div>
+                    <div class="start-menu-grid" id="startMenuGrid"></div>
+                  </div>
+              `;
+              break;
+          // Text Editor
+          case 'Text Editor':
+              content = `
+                  <div class="text-editor-container">
+                    <textarea id="textEditorArea" spellcheck="false"></textarea>
+                  </div>
+              `;
+              break;
+          // Paint
+          case 'Paint':
+              content = `
+                  <div class="paint-container">
+                    <canvas id="paintCanvas"></canvas>
+                    <div class="paint-toolbar">
+                      <button data-tool="pencil" class="active">Pencil</button>
+                      <button data-tool="eraser">Eraser</button>
+                      <input type="color" id="paintColor" value="#000000" />
+                      <input type="range" id="brushSize" min="1" max="20" value="5" />
+                    </div>
+                  </div>
+              `;
+              break;
+          // Browser
+          case 'Browser':
+              content = `
+                  <div class="browser-container">
+                    <div class="browser-toolbar">
+                      <button id="browserBack">←</button>
+                      <button id="browserForward">→</button>
+                      <input type="text" id="browserUrl" placeholder="Enter URL..." />
+                      <button id="browserGo">Go</button>
+                    </div>
+                    <iframe id="browserFrame"></iframe>
+                  </div>
+              `;
+              break;
           default:
               content = `<div style="padding: 1rem;"><h2>${appName}</h2><p>This is the content for ${appName}.</p></div>`;
       }
@@ -537,6 +589,19 @@ function restoreSessionState() {
         break;
       case 'Settings':
         setupSettings(appWindow);
+        break;
+      // JS-OS apps
+      case 'Start Menu':
+        setupStartMenu(appWindow);
+        break;
+      case 'Text Editor':
+        setupTextEditor(appWindow);
+        break;
+      case 'Paint':
+        setupPaint(appWindow);
+        break;
+      case 'Browser':
+        setupBrowser(appWindow);
         break;
     }
   }
@@ -1253,6 +1318,166 @@ function restoreSessionState() {
       }
   }
 
+  // Start Menu functionality
+  function setupStartMenu(appWindow) {
+    const grid = appWindow.querySelector('#startMenuGrid');
+    grid.innerHTML = '';
+    
+    apps.forEach(app => {
+      if (app.name === 'Start Menu') return;
+      
+      const appItem = document.createElement('div');
+      appItem.className = 'start-menu-item';
+      appItem.innerHTML = `
+        <img src="${app.icon}" alt="${app.name}" />
+        <span>${app.name}</span>
+      `;
+      appItem.addEventListener('click', () => {
+        launchApp(app.name);
+        appWindow.classList.add('minimized');
+        vibrateDevice([10]);
+      });
+      grid.appendChild(appItem);
+    });
+
+    const searchInput = appWindow.querySelector('#startMenuSearch');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const items = grid.querySelectorAll('.start-menu-item');
+      
+      items.forEach(item => {
+        const appName = item.querySelector('span').textContent.toLowerCase();
+        item.style.display = appName.includes(searchTerm) ? 'flex' : 'none';
+      });
+    });
+  }
+
+  // Text Editor App
+  function setupTextEditor(appWindow) {
+    const textArea = appWindow.querySelector('#textEditorArea');
+    textArea.style.width = '100%';
+    textArea.style.height = '100%';
+    textArea.style.background = 'var(--highlight)';
+    textArea.style.color = 'var(--text-color)';
+    textArea.style.border = 'none';
+    textArea.style.padding = '10px';
+    textArea.style.fontFamily = 'monospace';
+    textArea.focus();
+  }
+
+  // Paint App
+  function setupPaint(appWindow) {
+    const canvas = appWindow.querySelector('#paintCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+      canvas.width = appWindow.offsetWidth;
+      canvas.height = appWindow.offsetHeight - 50;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+    let tool = 'pencil';
+    let color = '#000000';
+    let brushSize = 5;
+    
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+    
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.strokeStyle = tool === 'eraser' ? 'var(--glass-bg)' : color;
+      ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+      
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+    
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+    
+    // Toolbar events
+    appWindow.querySelectorAll('.paint-toolbar button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        appWindow.querySelectorAll('.paint-toolbar button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tool = btn.dataset.tool;
+      });
+    });
+    
+    appWindow.querySelector('#paintColor').addEventListener('change', (e) => {
+      color = e.target.value;
+    });
+    
+    appWindow.querySelector('#brushSize').addEventListener('input', (e) => {
+      brushSize = e.target.value;
+    });
+  }
+
+  // Browser App
+  function setupBrowser(appWindow) {
+    const browserFrame = appWindow.querySelector('#browserFrame');
+    const urlInput = appWindow.querySelector('#browserUrl');
+    const backBtn = appWindow.querySelector('#browserBack');
+    const forwardBtn = appWindow.querySelector('#browserForward');
+    const goBtn = appWindow.querySelector('#browserGo');
+    
+    browserFrame.style.width = '100%';
+    browserFrame.style.height = 'calc(100% - 40px)';
+    browserFrame.style.border = 'none';
+    
+    function navigate() {
+      let url = urlInput.value;
+      if (!url.startsWith('http')) {
+        url = 'https://' + url;
+      }
+      browserFrame.src = url;
+    }
+    
+    goBtn.addEventListener('click', navigate);
+    urlInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') navigate();
+    });
+    
+    backBtn.addEventListener('click', () => {
+      try {
+        browserFrame.contentWindow.history.back();
+      } catch (e) {
+        console.log('Cannot navigate back due to cross-origin restrictions');
+      }
+    });
+    
+    forwardBtn.addEventListener('click', () => {
+      try {
+        browserFrame.contentWindow.history.forward();
+      } catch (e) {
+        console.log('Cannot navigate forward due to cross-origin restrictions');
+      }
+    });
+    
+    browserFrame.addEventListener('load', () => {
+      try {
+        urlInput.value = browserFrame.contentWindow.location.href;
+      } catch (e) {
+        console.log('Cross-origin frame, cannot access URL');
+      }
+    });
+    
+    // Load initial page
+    browserFrame.src = 'https://example.com';
+  }
+
   function bringWindowToFront(windowElement) {
     currentZIndex++;
     windowElement.style.zIndex = currentZIndex;
@@ -1510,6 +1735,10 @@ function restoreSessionState() {
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Escape') {
+        e.preventDefault();
+        launchApp('Start Menu');
+      }
       if (e.ctrlKey && e.altKey && e.key === 't') {
           e.preventDefault();
           launchApp('Terminal');
