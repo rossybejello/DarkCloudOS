@@ -1,0 +1,36 @@
+[build-system]
+requires = ["poetry-core>=1.1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "monacode-toolkit"
+version = "0.3.0"
+description = "Monacode Toolkit – AI/LLM-powered code editor, file explorer, terminal, secure vault & installers."
+authors = ["Darkstar <drkstr.ltd@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/rossybejello/DarkCloudOS/tree/main/Monacode-Toolkit"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+click = "^8.1"
+PyYAML = "^6.0"
+requests = "^2.31"
+cryptography = "^40.0"
+python-dotenv = "^1.0.0"
+openai = "^0.27.0"
+GitPython = "^3.1.36"
+huggingface-hub = "^0.16.4"
+anthropic = "^1.0.0"
+google-cloud-aiplatform = "^1.30.0"
+deepseek-sdk = "^0.1.0"
+perplexity-api = "^0.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4"
+mypy = "^1.5"
+flake8 = "^6.0"
+black = "^23.9"
+
+[tool.poetry.scripts]
+monacode = "monacode.cli:cli"
