@@ -1,0 +1,42 @@
+// package.json
+{
+  "name": "monacode-toolkit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monacode Toolkit – Modular developer productivity suite",
+  "main": "public/electron.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "electron": "electron .",
+    "build": "react-scripts build",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "productName": "Monacode Toolkit",
+    "appId": "com.monacode.toolkit",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    }
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-particles-js": "^3.4.1",
+    "particles.js": "^2.0.0",
+    "electron": "^25.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.6.0",
+    "typescript": "^4.9.5"
+  }
+}
